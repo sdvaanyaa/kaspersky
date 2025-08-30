@@ -2,11 +2,11 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/sdvaanyaa/kasp/internal/entity"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/entity"
 	"log/slog"
 	"net/http"
 
-	"github.com/sdvaanyaa/kasp/internal/workerpool"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/workerpool"
 )
 
 func EnqueueHandler(wp *workerpool.WorkerPool) http.HandlerFunc {

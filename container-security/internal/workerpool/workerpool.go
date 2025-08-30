@@ -3,8 +3,8 @@ package workerpool
 import (
 	"context"
 	"errors"
-	"github.com/sdvaanyaa/kasp/internal/config"
-	"github.com/sdvaanyaa/kasp/internal/entity"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/config"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/entity"
 	"log/slog"
 	"math/rand"
 	"sync"

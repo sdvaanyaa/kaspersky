@@ -3,9 +3,9 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/sdvaanyaa/kasp/internal/config"
-	"github.com/sdvaanyaa/kasp/internal/entity"
-	"github.com/sdvaanyaa/kasp/internal/workerpool"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/config"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/entity"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/workerpool"
 	"net/http"
 	"net/http/httptest"
 	"testing"

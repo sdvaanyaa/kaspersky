@@ -2,8 +2,8 @@ package workerpool
 
 import (
 	"errors"
-	"github.com/sdvaanyaa/kasp/internal/config"
-	"github.com/sdvaanyaa/kasp/internal/entity"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/config"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/entity"
 	"testing"
 )
 

@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/sdvaanyaa/kasp/internal/config"
-	"github.com/sdvaanyaa/kasp/internal/handler"
-	"github.com/sdvaanyaa/kasp/internal/workerpool"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/config"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/handler"
+	"github.com/sdvaanyaa/kaspersky/container-security/internal/workerpool"
 	"log/slog"
 	"net/http"
 	"os"
