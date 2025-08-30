@@ -24,6 +24,7 @@ type WorkerPool struct {
 	cancel     context.CancelFunc
 	config     config.Config
 	taskStates map[string]*entity.Task
+	workFunc   func() error
 }
 
 func New(cfg config.Config) *WorkerPool {
@@ -35,6 +36,7 @@ func New(cfg config.Config) *WorkerPool {
 		cancel:     cancel,
 		config:     cfg,
 		taskStates: make(map[string]*entity.Task),
+		workFunc:   simulateWork,
 	}
 
 	slog.Info(
@@ -93,7 +95,7 @@ func (wp *WorkerPool) processTask(t entity.Task) {
 	)
 	wp.updateState(t.ID, entity.TaskStateRunning, &t)
 
-	err := wp.simulateWork()
+	err := wp.workFunc()
 	if err == nil {
 		wp.updateState(t.ID, entity.TaskStateDone, &t)
 		slog.Info("task completed", slog.String("task_id", t.ID))
@@ -123,7 +125,15 @@ func calcBackoff(retries int) time.Duration {
 	return backoff + jitter
 }
 
-func (wp *WorkerPool) simulateWork() error {
+func (wp *WorkerPool) updateState(id, state string, t *entity.Task) {
+	wp.stateMu.Lock()
+	defer wp.stateMu.Unlock()
+
+	t.State = state
+	wp.taskStates[id] = t
+}
+
+func simulateWork() error {
 	duration := time.Duration(100+rand.Intn(400)) * time.Millisecond
 	time.Sleep(duration)
 
@@ -132,12 +142,4 @@ func (wp *WorkerPool) simulateWork() error {
 	}
 
 	return nil
-}
-
-func (wp *WorkerPool) updateState(id, state string, t *entity.Task) {
-	wp.stateMu.Lock()
-	defer wp.stateMu.Unlock()
-
-	t.State = state
-	wp.taskStates[id] = t
 }
