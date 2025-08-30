@@ -6,18 +6,39 @@ import (
 	"strconv"
 )
 
+const (
+	DefaultWorkers = 4
+	MinWorkers     = 1
+	MaxWorkers     = 32
+
+	DefaultQueueSize = 64
+	MinQueueSize     = 1
+	MaxQueueSize     = 1024
+)
+
 type Config struct {
 	Workers   int
 	QueueSize int
 }
 
 func LoadConfig() Config {
-	workers := getEnvIntOrDefault("WORKERS", 4, 1)       // min 1
-	queueSize := getEnvIntOrDefault("QUEUE_SIZE", 64, 1) // min 1
+	workers := getEnvIntOrDefault(
+		"WORKERS",
+		DefaultWorkers,
+		MinWorkers,
+		MaxWorkers,
+	)
+	queueSize := getEnvIntOrDefault(
+		"QUEUE_SIZE",
+		DefaultQueueSize,
+		MinQueueSize,
+		MaxQueueSize,
+	)
+
 	return Config{Workers: workers, QueueSize: queueSize}
 }
 
-func getEnvIntOrDefault(key string, defaultVal, minVal int) int {
+func getEnvIntOrDefault(key string, defaultVal, minVal, maxVal int) int {
 	envValStr := os.Getenv(key)
 	if envValStr == "" {
 		return defaultVal
@@ -36,7 +57,7 @@ func getEnvIntOrDefault(key string, defaultVal, minVal int) int {
 
 	if envValInt < minVal {
 		slog.Warn(
-			"env value below min, using default",
+			"env value below minimum, using default",
 			slog.String("key", key),
 			slog.Int("value", envValInt),
 			slog.Int("min", minVal),
@@ -44,5 +65,14 @@ func getEnvIntOrDefault(key string, defaultVal, minVal int) int {
 		return defaultVal
 	}
 
+	if envValInt > maxVal {
+		slog.Warn(
+			"env value above maximum, using default",
+			slog.String("key", key),
+			slog.Int("value", envValInt),
+			slog.Int("max", maxVal),
+		)
+		return defaultVal
+	}
 	return envValInt
 }
